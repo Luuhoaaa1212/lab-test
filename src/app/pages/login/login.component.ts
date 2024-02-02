@@ -64,7 +64,7 @@ export class LoginComponent {
             detail: response?.message?.name,
           });
           setTimeout(() => {
-            this.router.navigate(['/']);
+            this.router.navigate(['home']);
             this.authService.login();
           }, 700);
         });
