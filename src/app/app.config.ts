@@ -13,5 +13,5 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom([BrowserAnimationsModule]),
     provideStore(reducers, { metaReducers }),
     provideHttpClient(),
-  ],
+  ]
 };
