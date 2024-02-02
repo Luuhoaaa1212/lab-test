@@ -1,0 +1,25 @@
+
+<div class="tw-w-[260px] tw-min-h-[100vh] tw-h-[100%] tw-bg-color-border tw-py-3 tw-px-6">
+    <div class="tw-flex tw-justify-between tw-items-center">
+        <h1 class="tw-text-black tw-font-bold">SHOP.CO</h1>
+        <span class="tw-text-lg">admin</span>
+    </div>
+    <div class="tw-mt-4">
+        <ul class="tw-flex tw-flex-col tw-gap-2">
+            <li>
+                <a class="tw-text-lg" routerLink="admin/products" routerLinkActive="active" ariaCurrentWhenActive="page" href="">Sản Phẩm</a>
+            </li>
+            <li>
+                <a class="tw-text-lg" routerLink="admin/oder" routerLinkActive="active" ariaCurrentWhenActive="page" href="">Đơn Hàng</a>
+            </li>
+            <li>
+                <a class="tw-text-lg" routerLink="admin/chart" routerLinkActive="active" ariaCurrentWhenActive="page" href="">Thống kê</a>
+            </li>
+            <li (click)="handleLogoutAdmin($event)" class="tw-cursor-pointer tw-mt-1">
+                <span>Logout</span>
+              </li>
+        </ul>
+    </div>
+</div>
+<p-toast></p-toast>
+    <p-confirmDialog></p-confirmDialog>

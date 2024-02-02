@@ -1,0 +1,130 @@
+<div class="tw-flex tw-items-center tw-justify-center tw-flex-col tw-mt-[120px]">
+  <div class="tw-w-[74%]">
+    <h1 class="tw-text-3xl tw-leading-normal tw-text-black tw-font-bold tw-mb-9">
+      YOUR CART
+    </h1>
+  </div>
+  <div class="tw-w-[74%] tw-flex tw-gap-4">
+    <div
+    *ngIf="productCart.length > 0; else elseBlock1"
+      class="tw-basis-[60%] tw-flex tw-flex-col tw-rounded-[20px] tw-border-solid tw-border-[1px] tw-border-color-border tw-py-5 tw-px-6 tw-gap-6 tw-min-h-[200px]"
+    >
+      <div *ngFor="let item of productCart" class="tw-flex tw-justify-between tw-py-3 tw-border-solid tw-border-b-[1px] tw-border-color-border">
+        <div class="tw-flex tw-gap-4">
+         <div class="tw-w-[125px] tw-rounded-lg tw-h-[125px] tw-flex tw-items-center tw-justify-center tw-bg-color-item-bg tw-overflow-hidden">
+            <img
+            class="tw-w-full tw-h-full tw-block tw-object-cover"
+            [src]='getImgCart(item.idProduct)'
+            alt=""
+          />
+         </div>
+          <div class="tw-flex-1">
+            <span
+            class="tw-mt-2 tw-block tw-text-black tw-text-xl tw-font-bold tw-capitalize"
+            >{{getNameCart(item.idProduct)}}</span
+          >
+          <div class="tw-flex tw-items-center">
+            <span class="tw-text-black tw-font-bold">Size:</span>
+            <span> {{getSizeCart(item.idSize)}}</span>
+          </div>
+          <div class="tw-flex tw-items-center">
+            <span class="tw-text-black tw-font-bold">Color:</span>
+            <span> {{getColorCart(item.idColor)}}</span>
+          </div>
+          <div class="tw-mt-3">
+            <div class="tw-flex tw-items-center tw-justify-start tw-gap-[10px]">
+              <div>
+                <span class="tw-text-black tw-text-[24px] tw-font-[700]"
+                  >${{getPriceCart(item.idProduct)}}</span
+                >
+              </div>
+              <div>
+                <span
+                  *ngIf="price_old !== 0; else elseBlock"
+                  class="tw-text-color-text-feedback tw-text-[24px] tw-font-[700] tw-line-through"
+                  >${{ price_old }}
+                </span>
+                <ng-template #elseBlock></ng-template>
+              </div>
+              <div
+                *ngIf="percent !== 0; else elseBlock1"
+                class="tw-flex tw-w-[58px] tw-py-[6px] tw-px-[42px] tw-items-center tw-justify-center tw-rounded-[62px] tw-bg-color-bg-sales"
+              >
+                <span
+                  class="tw-text-color-text-sales tw-block tw-text-xs tw-font-medium tw-leading-normal"
+                  >-{{ percent }}%</span
+                >
+              </div>
+              <ng-template #elseBlock1></ng-template>
+            </div>
+
+
+      
+          </div>
+          </div>
+
+        </div> 
+
+        <div class="tw-flex tw-flex-col tw-justify-between">
+           <div (click)="handleDeleteCart(item.id,item.quantity)" class="tw-flex tw-cursor-pointer tw-justify-end"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M20.25 4.5H16.5V3.75C16.5 3.15326 16.2629 2.58097 15.841 2.15901C15.419 1.73705 14.8467 1.5 14.25 1.5H9.75C9.15326 1.5 8.58097 1.73705 8.15901 2.15901C7.73705 2.58097 7.5 3.15326 7.5 3.75V4.5H3.75C3.55109 4.5 3.36032 4.57902 3.21967 4.71967C3.07902 4.86032 3 5.05109 3 5.25C3 5.44891 3.07902 5.63968 3.21967 5.78033C3.36032 5.92098 3.55109 6 3.75 6H4.5V19.5C4.5 19.8978 4.65804 20.2794 4.93934 20.5607C5.22064 20.842 5.60218 21 6 21H18C18.3978 21 18.7794 20.842 19.0607 20.5607C19.342 20.2794 19.5 19.8978 19.5 19.5V6H20.25C20.4489 6 20.6397 5.92098 20.7803 5.78033C20.921 5.63968 21 5.44891 21 5.25C21 5.05109 20.921 4.86032 20.7803 4.71967C20.6397 4.57902 20.4489 4.5 20.25 4.5ZM10.5 15.75C10.5 15.9489 10.421 16.1397 10.2803 16.2803C10.1397 16.421 9.94891 16.5 9.75 16.5C9.55109 16.5 9.36032 16.421 9.21967 16.2803C9.07902 16.1397 9 15.9489 9 15.75V9.75C9 9.55109 9.07902 9.36032 9.21967 9.21967C9.36032 9.07902 9.55109 9 9.75 9C9.94891 9 10.1397 9.07902 10.2803 9.21967C10.421 9.36032 10.5 9.55109 10.5 9.75V15.75ZM15 15.75C15 15.9489 14.921 16.1397 14.7803 16.2803C14.6397 16.421 14.4489 16.5 14.25 16.5C14.0511 16.5 13.8603 16.421 13.7197 16.2803C13.579 16.1397 13.5 15.9489 13.5 15.75V9.75C13.5 9.55109 13.579 9.36032 13.7197 9.21967C13.8603 9.07902 14.0511 9 14.25 9C14.4489 9 14.6397 9.07902 14.7803 9.21967C14.921 9.36032 15 9.55109 15 9.75V15.75ZM15 4.5H9V3.75C9 3.55109 9.07902 3.36032 9.21967 3.21967C9.36032 3.07902 9.55109 3 9.75 3H14.25C14.4489 3 14.6397 3.07902 14.7803 3.21967C14.921 3.36032 15 3.55109 15 3.75V4.5Z" fill="#FF3333"/>
+            </svg>
+          </div>
+          
+           <div class="tw-flex tw-items-center tw-justify-center ">
+            <div class="card flex justify-content-center">
+              <p-inputNumber [min]="1" [(ngModel)]="item.quantity" (ngModelChange)="handleInputChange($event,item.id)" [style]="{'width': '145px'}" [showButtons]="true" buttonLayout="horizontal" spinnerMode="horizontal" inputId="horizontal" decrementButtonClass="p-button-secondary"
+              incrementButtonClass="p-button-secondary" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" [inputStyle]="{'width': '60px'}">
+           </p-inputNumber>
+            </div>
+           </div>
+          
+        </div>
+       
+      </div>
+      
+
+    </div>
+ 
+    <ng-template #elseBlock1>
+      <div class="tw-basis-[60%] tw-flex tw-flex-col tw-rounded-[20px] tw-border-solid tw-justify-center tw-items-center tw-border-[1px] tw-border-color-border tw-py-5 tw-px-6 tw-gap-6 tw-min-h-[200px]">
+        <div class="tw-w-[60%] tw-flex tw-items-center tw-justify-center">
+          <img src="../../../assets/imgs/carts/empty-cart.png" alt="">
+        </div>
+      </div>
+    </ng-template>
+  
+
+
+    <div class="tw-basis-[40%] tw-border-solid tw-border-[1px] tw-border-color-border tw-rounded-[20px] tw-flex tw-flex-col tw-gap-6  tw-p-6">
+        <h1 class="tw-text-black tw-text-2xl tw-font-bold">Order Summary</h1>
+        <div class="tw-flex tw-flex-col tw-gap-5 tw-border-solid tw-border-b-[1px] tw-border-color-border tw-pb-5">
+            <div class="tw-flex tw-justify-between">
+                <span>Subtotal</span>
+                <span class="tw-text-black tw-font-bold">${{subtotal}}</span>
+            </div>
+           
+            <div class="tw-flex tw-justify-between">
+                <span>Quantity</span>
+                <span class="tw-text-black tw-font-bold">{{totalCart}}</span>
+            </div>
+        </div>
+        <div class="tw-flex tw-justify-between tw-text-xl">
+            <span>Total</span>
+            <span class="tw-text-black tw-font-bold">${{subtotal}}</span>
+        </div>
+        <div class="tw-flex tw-justify-between tw-gap-3">
+            <span class="p-input-icon-left tw-block">
+                <i class="pi pi-send"></i>
+                <input class="tw-rounded-[62px] tw-bg-[#F0F0F0]" type="text" pInputText [(ngModel)]="value" />
+            </span>
+            <button class="tw-w-[200px] tw-h-[52px] tw-rounded-[62px] tw-text-center tw-px-[54px] tw-py-[16px] tw-text-white tw-bg-black">Apply</button>
+        </div>
+        <button class="tw-w-[100%] tw-h-[52px] tw-rounded-[62px] tw-text-center tw-px-[54px] tw-py-[16px] tw-text-white tw-bg-black tw-flex tw-items-center tw-justify-center tw-gap-2"><a href="" routerLink="/pay" ><span>Go to Checkout</span></a>
+            <svg class="tw-text-white" xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                <path d="M14.7959 4.4541L21.5459 11.2041C21.6508 11.3086 21.734 11.4328 21.7908 11.5696C21.8476 11.7063 21.8768 11.8529 21.8768 12.001C21.8768 12.149 21.8476 12.2957 21.7908 12.4324C21.734 12.5691 21.6508 12.6933 21.5459 12.7979L14.7959 19.5479C14.5846 19.7592 14.2979 19.8779 13.9991 19.8779C13.7002 19.8779 13.4135 19.7592 13.2022 19.5479C12.9908 19.3365 12.8721 19.0499 12.8721 18.751C12.8721 18.4521 12.9908 18.1654 13.2022 17.9541L18.0313 13.125L4.25 13.125C3.95163 13.125 3.66548 13.0065 3.4545 12.7955C3.24353 12.5846 3.125 12.2984 3.125 12C3.125 11.7017 3.24353 11.4155 3.45451 11.2045C3.66548 10.9936 3.95163 10.875 4.25 10.875L18.0313 10.875L13.2013 6.04598C12.9899 5.83463 12.8712 5.54799 12.8712 5.2491C12.8712 4.95022 12.9899 4.66357 13.2013 4.45223C13.4126 4.24088 13.6992 4.12215 13.9981 4.12215C14.297 4.12215 14.5837 4.24088 14.795 4.45223L14.7959 4.4541Z" fill="white"/>
+                </svg>
+        </button>
+    </div>
+  </div>
+</div>

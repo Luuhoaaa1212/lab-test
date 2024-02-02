@@ -1,0 +1,14 @@
+<app-slider></app-slider>
+<div class="tw-px-[99px]">
+    <app-fillter (dataFillter) ="handleFillterData($event)"></app-fillter>
+    <app-arrivals [products]="topProducts" title="NEW ARRIVALS"></app-arrivals>
+    <app-arrivals [products]="products" title="TOP SELLING"></app-arrivals>
+
+    <div *ngIf="productsCoppy.length > row; else elseBlock"> 
+        <app-pagination [totalItem]="totalItem" (onchangePage)="handleUpdatePagination($event)">
+        </app-pagination>
+    </div>
+     <ng-template #elseBlock></ng-template>
+
+</div>
+

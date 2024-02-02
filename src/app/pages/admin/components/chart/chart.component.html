@@ -1,0 +1,101 @@
+
+<h1 class="tw-py-4 tw-px-4 tw-text-4xl">Thống Kê Đơn Hàng</h1>
+<div class="tw-flex tw-gap-5 tw-pl-4">
+    <span> Sắp xếp theo : {{textTimeInit}}</span>
+    <span (click)="handleClickChangeTime()" class="tw-text-green-400 tw-cursor-pointer hover:tw-underline tw-capitalize">thay đổi </span>
+</div>
+<div class="tw-w-[1100px] tw-py-4 tw-px-4">
+    <div class="card tw-w-full">
+        <p-chart type="bar" [data]="data" [options]="options"></p-chart>
+    </div>
+</div>
+
+<h1 class="tw-py-4 tw-px-4 tw-text-4xl">Thống Kê Doanh Thu </h1>
+<div class="tw-flex tw-gap-5 tw-pl-4">
+    <span> Sắp xếp theo : {{textTimeInit1}}</span>
+    <span (click)="handleClickChangeTime1()" class="tw-text-green-400 tw-cursor-pointer hover:tw-underline tw-capitalize">thay đổi </span>
+</div>
+<div class="tw-w-[1100px] tw-py-4 tw-px-4">
+    <div class="card tw-w-full">
+        <p-chart type="bar" [data]="data1" [options]="options1"></p-chart>
+    </div>
+</div>
+
+<p-dialog
+header="Xắp Xếp Theo"
+[(visible)]="visibleChartOder"
+[modal]="true"
+[style]="{ width: '50vw' }"
+[draggable]="false"
+[resizable]="false"
+>
+<div>
+  <div class="card flex justify-content-center">
+    <div class="tw-flex tw-flex-col tw-gap-3">
+        <ng-container *ngFor="let time of TimeChooser">
+            <div
+             
+              class="field-checkbox tw-flex tw-items-start tw-gap-2 tw-border-b-[1px] tw-border-solid tw-border-[#69696969] tw-pb-2"
+            >
+              <p-radioButton
+               
+                class="tw-mt-1"
+                [inputId]="time.id"
+                name="address"
+                [value]="time"
+                [(ngModel)]="selectTime"
+              ></p-radioButton>
+              <div class="tw-flex tw-flex-col tw-gap-2">
+                <span class="tw-font-semibold">{{time.name}}</span>
+              </div>
+            </div>
+          </ng-container>
+    </div>
+  </div>
+</div>
+<p-button
+  (click)="handleChangeTime()"
+  class="tw-block tw-mt-6"
+  label="Confirm"
+  severity="success"
+></p-button>
+</p-dialog>
+<p-dialog
+header="Xắp Xếp Theo"
+[(visible)]="visibleChartOder1"
+[modal]="true"
+[style]="{ width: '50vw' }"
+[draggable]="false"
+[resizable]="false"
+>
+<div>
+  <div class="card flex justify-content-center">
+    <div class="tw-flex tw-flex-col tw-gap-3">
+        <ng-container *ngFor="let time of TimeChooser1">
+            <div
+             
+              class="field-checkbox tw-flex tw-items-start tw-gap-2 tw-border-b-[1px] tw-border-solid tw-border-[#69696969] tw-pb-2"
+            >
+              <p-radioButton
+               
+                class="tw-mt-1"
+                [inputId]="time.id"
+                name="address"
+                [value]="time"
+                [(ngModel)]="selectTime1"
+              ></p-radioButton>
+              <div class="tw-flex tw-flex-col tw-gap-2">
+                <span class="tw-font-semibold">{{time.name}}</span>
+              </div>
+            </div>
+          </ng-container>
+    </div>
+  </div>
+</div>
+<p-button
+  (click)="handleChangeTime1()"
+  class="tw-block tw-mt-6"
+  label="Confirm"
+  severity="success"
+></p-button>
+</p-dialog>

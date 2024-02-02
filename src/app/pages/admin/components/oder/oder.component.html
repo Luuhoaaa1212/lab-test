@@ -1,0 +1,345 @@
+<div>
+  <div class="tw-my-10 tw-w-full">
+    <div
+      class="tw-relative tw-max-h-[900px] tw-w-[1500px] tw-overflow-y-auto tw-shadow-md tw-rounded-lg"
+    >
+      <div class="card flex justify-content-center tw-pl-2">
+        <p-dropdown
+          class="tw-min-w-[200px]"
+          [options]="options"
+          [(ngModel)]="selectOption"
+          optionLabel="name"
+          [showClear]="true"
+          placeholder="Tìm kiếm"
+        ></p-dropdown>
+        <p-button
+          class="tw-ml-1 tw-capitalize"
+          severity="warning"
+          [raised]="true"
+          label="Lọc"
+          (click)="handleApplyFillter()"
+        ></p-button>
+      </div>
+      <table
+        class="tw-w-full tw-text-sm tw-text-left rtl:tw-text-right tw-text-gray-500 dark:text-gray-400 tw-min-w-full tw-mt-11"
+      >
+        <thead
+          class="tw-text-xs tw-text-gray-700 tw-uppercase tw-bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+        >
+          <tr>
+            <th scope="col" class="tw-px-6 tw-py-3">khách hàng</th>
+            <th scope="col" class="tw-px-6 tw-py-3">Địa chỉ</th>
+            <th scope="col" class="tw-px-6 tw-py-3">Thời gian đặt hàng</th>
+            <th scope="col" class="tw-px-6 tw-py-3">Thanh toán</th>
+            <th scope="col" class="tw-px-6 tw-py-3">Trạng thái</th>
+            <th scope="col" class="tw-px-6 tw-py-3">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let oder of ordersDataAll"
+            class="tw-bg-white tw-border-b tw-dark:bg-gray-800 tw-dark:border-gray-700 tw-hover:bg-gray-50 tw-dark:hover:bg-gray-600"
+          >
+            {{
+              getOderDetailById(oder._id)
+            }}
+            <th
+              scope="row"
+              class="tw-flex tw-items-center tw-px-6 tw-py-4 tw-text-gray-900 tw-whitespace-nowrap tw-dark:text-white"
+            >
+              <div class="tw-w-12 tw-h-12 tw-rounded-full tw-overflow-hidden">
+                <img
+                  class="tw-object-cover tw-w-full tw-h-full tw-rounded-full"
+                  [src]="getImgUser(oder.user_id)"
+                />
+              </div>
+              <div class="tw-ps-3">
+                <div class="tw-text-base tw-font-semibold">
+                  {{ getImgUser(oder.user_id, true) }}
+                </div>
+              </div>
+            </th>
+            <td class="tw-px-6 tw-py-4 tw-max-w-[370px]">
+              {{ getdetailAdress(oder.address_id) }}
+            </td>
+            <td class="tw-px-6 tw-py-4">
+              {{ parseMongoDBDateTime(oder.createdAt) }}
+            </td>
+            <td class="tw-px-6 tw-py-4">
+              <div class="tw-flex tw-items-center">
+                {{
+                  oder.type_pay
+                    ? "Thanh toán trực tuyến"
+                    : "Thanh toán khi nhận hàng"
+                }}
+              </div>
+            </td>
+            <td class="tw-px-6 tw-py-4">
+              <div
+                *ngIf="status == 0"
+                class="tw-text-[#f97316] tw-flex tw-items-center"
+              >
+                Chờ Xác Nhận
+              </div>
+              <div class="tw-flex tw-gap-4" *ngIf="status == 1">
+                <div class="tw-flex tw-text-[#46a1ec] tw-items-center">
+                  Đang giao
+                </div>
+
+                <div>
+                  <i
+                    class="pi pi-car tw-cursor-pointer"
+                    [pTooltip]="tooltipContent"
+                    tooltipPosition="bottom"
+                    style="font-size: 1.3rem"
+                  ></i>
+                  <ng-template
+                    style="background-color: aliceblue"
+                    #tooltipContent
+                  >
+                    <div class="tw-flex tw-justify-around tw-gap-3">
+                      <div
+                        class="tw-basis-[50%] tw-w-[50px] tw-h-[50px] tw-rounded-full tw-overflow-hidden"
+                      >
+                        <img
+                          [src]="getInformationShippers(oder._id, 'avt', true)"
+                          class="mr-2 tw-w-full tw-h-full tw-object-cover"
+                        />
+                      </div>
+                      <div>
+                        <span class="tw-capitalize tw-text-[12px]">{{
+                          getInformationShippers(oder._id, "name")
+                        }}</span>
+                        <span class="tw-text-[12px]">
+                          {{ getInformationShippers(oder._id, "sdt") }}</span
+                        >
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+              <div
+                *ngIf="status == 2"
+                class="tw-text-[#2563eb] tw-flex tw-items-center"
+              >
+                Đã giao xong
+              </div>
+              <div
+                *ngIf="status == 3"
+                class="tw-flex tw-items-center tw-text-red-600"
+              >
+                Đã Hủy
+              </div>
+            </td>
+            <td class="tw-px-6 tw-py-4 tw-flex tw-gap-3">
+              <div
+                class="card flex justify-content-center gap-2 tw-flex tw-justify-center tw-items-end tw-gap-2"
+              >
+                <p-button
+                  severity="info"
+                  [raised]="true"
+                  label="Chi Tiết"
+                  (click)="handleDetailOder(oder._id)"
+                ></p-button>
+                <p-button
+                  *ngIf="status == 0"
+                  severity="warning"
+                  [raised]="true"
+                  label="xác nhận"
+                  (click)="showDialogShiper(oder._id)"
+                ></p-button>
+                <p-button
+                  *ngIf="status == 2"
+                  severity="cuccess"
+                  [raised]="true"
+                  label="hoàn thành"
+                  (click)="handleComplete(oder._id)"
+                ></p-button>
+                <p-button
+                  *ngIf="status == 3"
+                  severity="danger"
+                  [raised]="true"
+                  label="đã hủy"
+                  (click)="handleViewReason(oder._id)"
+                ></p-button>
+                <p-button
+                  *ngIf="status == 1"
+                  severity="info"
+                  [raised]="true"
+                  label="hoàn tất"
+                  (click)="handleOderComplete(oder._id)"
+                ></p-button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="ordersDataAll.length <= 0">
+            <span class="tw-py-3 tw-px-3 tw-font-bold"
+              >Không tìm thấy sản phẩm nào .</span
+            >
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  header="Chi tiết đơn hàng "
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '90vw', height: '50vh' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="tw-relative tw-overflow-x-auto tw-shadow-md tw-rounded-lg">
+    <table
+      class="tw-w-full tw-text-sm tw-text-left rtl:tw-text-right tw-text-gray-500 dark:text-gray-400"
+    >
+      <thead
+        class="tw-text-xs tw-text-gray-700 tw-capitalize tw-bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+      >
+        <tr>
+          <th scope="col" class="tw-px-6 tw-py-3">Id</th>
+          <th scope="col" class="tw-px-6 tw-py-3">oder_id</th>
+          <th scope="col" class="tw-px-6 tw-py-3">Product</th>
+          <th scope="col" class="tw-px-6 tw-py-3">Đơn giá</th>
+          <th scope="col" class="tw-px-6 tw-py-3">Đơn vị Vận chuyển</th>
+          <th scope="col" class="tw-px-6 tw-py-3">Thành Tiền</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let oderDetail of oderDetail_id"
+          class="tw-bg-white tw-border-b tw-dark:bg-gray-800 tw-dark:border-gray-700 tw-hover:bg-gray-50 tw-dark:hover:bg-gray-600"
+        >
+          <td class="tw-px-6 tw-py-4">{{ oderDetail._id }}</td>
+          <td class="tw-px-6 tw-py-4">{{ oderDetail.oder_id }}</td>
+          <th
+            scope="row"
+            class="tw-flex tw-items-center tw-px-6 tw-py-4 tw-text-gray-900 tw-whitespace-nowrap tw-dark:text-white"
+          >
+            <div class="tw-w-12 tw-h-12 tw-rounded-full tw-overflow-hidden">
+              <img
+                class="tw-object-cover tw-w-full tw-h-full tw-rounded-full"
+                [src]="getImgCart(oderDetail.product_id)"
+              />
+            </div>
+            <div class="tw-ps-3">
+              <div class="tw-text-base">
+                <span class="tw-font-bold"
+                  >{{ getNameCart(oderDetail.product_id, true) }},</span
+                >
+                <span class="tw-font-medium"
+                  >{{ getSizeCart(oderDetail.size_id) }},{{
+                    getColorCart(oderDetail.color_id)
+                  }}
+                </span>
+                <span class="tw-block tw-font-medium"
+                  >x{{ oderDetail.quantity }}</span
+                >
+              </div>
+            </div>
+          </th>
+
+          <td class="tw-px-6 tw-py-4">
+            ${{ getNameCart(oderDetail.product_id, false, 0, true) }}
+          </td>
+          <td class="tw-px-6 tw-py-4">
+            {{ getTypeTranfer(oderDetail.type_tranfer) }}
+          </td>
+          <td class="tw-px-6 tw-py-4">
+            ${{
+              getTotalCart(
+                oderDetail.product_id,
+                oderDetail.quantity,
+                oderDetail.type_tranfer
+              )
+            }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tw-text-right tw-font-bold tw-mt-3 tw-text-xl">
+    Tổng tiền: ${{ totalMoney }}
+  </div>
+</p-dialog>
+
+<p-dialog
+  header=" Chọn Shipper Giao Hàng"
+  [(visible)]="visibleShipper"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div>
+    <div class="card flex justify-content-center">
+      <div class="tw-flex tw-flex-col tw-gap-3">
+        <div
+          *ngFor="let shipper of shiperAll"
+          class="field-checkbox tw-flex tw-items-start tw-gap-5 tw-border-b-[1px] tw-border-solid tw-border-[#9a9a9a69] tw-pb-5"
+        >
+          <p-radioButton
+            class="tw-mt-1"
+            [inputId]="shipper._id"
+            name="address"
+            [value]="shipper"
+            [(ngModel)]="selectShiper"
+          ></p-radioButton>
+          <div class="tw-flex tw-gap-2 tw-items-center">
+            <div
+              class="tw-w-[70px] tw-h-[70px] tw-rounded-full tw-overflow-hidden"
+            >
+              <img
+                class="tw-w-full tw-h-full tw-object-cover"
+                [src]="getImgShippers(shipper.avt)"
+                alt=""
+              />
+            </div>
+            <div>
+              <span class="tw-font-semibold tw-block tw-capitalize">{{
+                shipper.name
+              }}</span>
+              <span class="tw-font-semibold tw-block">{{ shipper.year }}</span>
+              <span class="tw-font-semibold">{{ shipper.sdt }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-button
+    [disabled]="!selectShiper"
+    (click)="handleAddShipper()"
+    class="tw-block tw-mt-6"
+    label="Xác Nhận"
+    severity="success"
+  ></p-button>
+</p-dialog>
+<p-dialog
+  header="Lý do hủy đơn"
+  [(visible)]="visibleReasonDetail"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div>
+    <div class="card flex justify-content-center">
+      <div class="tw-flex tw-flex-col tw-gap-3">
+        <div>
+          <h1>Đã hủy đơn hàng vào: {{ reasonObject.reason_day }}</h1>
+          <h1>Lý do :{{ reasonObject.reasonName }}</h1>
+          <h1 class="tw-capitalize">yêu cầu bởi: người mua</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+<p-toast></p-toast>
+<p-confirmDialog
+  key="positionDialog"
+  [position]="position"
+  rejectButtonStyleClass="p-button-outlined"
+></p-confirmDialog>

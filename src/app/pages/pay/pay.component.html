@@ -1,0 +1,395 @@
+<div
+  class="tw-w-full tw-h-[100%] tw-pt-[110px] tw-flex tw-items-center tw-justify-center"
+>
+  <div class="tw-basis-[73%] tw-min-h-[400px] tw-bg-[#fff]">
+    <div class="tw-flex tw-justify-start tw-items-center tw-gap-2">
+      <div class="tw-text-color-placholder">
+        <svg
+          height="20"
+          viewBox="0 0 12 16"
+          width="16"
+          class="shopee-svg-icon icon-location-marker"
+        >
+          <path
+            d="M6 3.2c1.506 0 2.727 1.195 2.727 2.667 0 1.473-1.22 2.666-2.727 2.666S3.273 7.34 3.273 5.867C3.273 4.395 4.493 3.2 6 3.2zM0 6c0-3.315 2.686-6 6-6s6 2.685 6 6c0 2.498-1.964 5.742-6 9.933C1.613 11.743 0 8.498 0 6z"
+            fill-rule="evenodd"
+          ></path>
+        </svg>
+      </div>
+      <h1 class="tw-text-2xl">Địa chỉ giao hàng</h1>
+    </div>
+    <div class="tw-p-2 tw-flex tw-justify-between tw-items-center">
+      <div *ngIf="selectedAddress" class="tw-flex tw-items-center tw-justify-center">
+        <span class="tw-text-black tw-font-bold tw-text-lg tw-capitalize">{{
+          selectedAddress?.username + ' | ' + selectedAddress?.phone
+        }}</span>
+        <span class="tw-ml-6 tw-text-lg">{{ selectedAddress?.detail }}</span>
+      </div>
+      <span *ngIf="!selectedAddress" class="tw-text-red-600 tw-text-lg">Bạn hiện chưa có địa chỉ nào !</span>
+      <div class="tw-flex tw-items-center tw-justify-center tw-ml-3 tw-gap-5">
+        <div class="card flex justify-content-center">
+          <p-button
+            class="tw-mr-4"
+            severity="info"
+            [disabled]="!selectedAddress"
+            (click)="showDialog()"
+            icon="pi pi-directions"
+            label="Change"
+          ></p-button>
+          <p-button
+            (click)="showDialog1()"
+            icon="pi pi-plus"
+            label="New Address"
+          ></p-button>
+          <p-dialog
+            header="Change Address"
+            [(visible)]="visible"
+            [modal]="true"
+            [style]="{ width: '50vw' }"
+            [draggable]="false"
+            [resizable]="false"
+          >
+            <div>
+              <div class="card flex justify-content-center">
+                <div *ngIf="addressArr.length > 0 " class="tw-flex tw-flex-col tw-gap-3">
+                  <div
+                    *ngFor="let address of addressArr"
+                    class="field-checkbox tw-flex tw-items-start tw-gap-2 tw-border-b-[1px] tw-border-solid tw-border-[#69696969] tw-pb-2"
+                  >
+                    <p-radioButton
+                      class="tw-mt-1"
+                      [inputId]="address._id"
+                      name="address"
+                      [value]="address"
+                      [(ngModel)]="selectedAddress"
+                    ></p-radioButton>
+                    <div class="tw-flex tw-flex-col tw-gap-2">
+                      <label [for]="address._id" class="ml-2 tw-ml-1">
+                        <span class="tw-font-bold tw-capitalize">{{
+                          address.username
+                        }}</span>
+                        {{ " | " + address.phone }}
+                      </label>
+                      <label [for]="address._id" class="ml-2 tw-ml-1">{{
+                        address.detail
+                      }}</label>
+                      <label
+                        *ngIf="address.default"
+                        [for]="address._id"
+                        class="ml-2 tw-ml-1 tw-text-red-700"
+                        >Mặc định</label
+                      >
+                      <div
+                        *ngIf="!address.default"
+                        class="field-checkbox tw-mt-[-5px]"
+                      >
+                        <p-radioButton
+                          [inputId]="address._id"
+                          name="default"
+                          [value]="address"
+                          [(ngModel)]="selectedDefault"
+                        ></p-radioButton>
+                        <label [for]="address._id" class="ml-2 tw-ml-2"
+                          >Default address</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="addressArr.length == 0 " class="tw-flex tw-flex-col tw-gap-3">
+                  <span class="tw-text-red-600 tw-text-lg" >Hiện chưa có đỉa nào ! vui lòng thêm đia chỉ.</span>
+                </div>
+              </div>
+            </div>
+            <p-button
+            [disabled]="addressArr.length == 0"
+              (click)="handleChangeAddress()"
+              class="tw-block tw-mt-6"
+              label="Confirm"
+              severity="success"
+            ></p-button>
+          </p-dialog>
+
+          <p-dialog
+            class="tw-max-w-[700px]"
+            header="New Address"
+            [(visible)]="visible1"
+            [modal]="true"
+            [style]="{ width: '40%' }"
+            [draggable]="false"
+            [resizable]="false"
+          >
+            <div class="tw-flex tw-gap-4 tw-justify-between tw-mb-6">
+              <input
+                pInputText
+                type="text"
+                [(ngModel)]="userName"
+                placeholder="Username"
+              />
+              <input
+                pInputText
+                type="text"
+                [(ngModel)]="phoneNumer"
+                placeholder="Phone Number"
+              />
+            </div>
+            <div class="tw-flex tw-gap-[17px] tw-w-[100%]">
+              <select
+             
+                class="tw-max-w-[200px] tw-min-w-[200px] city tw-rounded-[6px] tw-border-[1px] tw-border-solid border-[#d1d5db]"
+                id="city"
+              >
+                <option value="" selected>Chọn tỉnh thành</option>
+              </select>
+
+              <select
+             
+                class="tw-max-w-[200px] tw-min-w-[200px] tw-rounded-[6px] tw-border-[1px] tw-border-solid border-[#d1d5db]"
+                id="district"
+              >
+                <option value="" selected>District</option>
+              </select>
+
+              <select
+              
+                class="tw-max-w-[200px] tw-min-w-[200px] tw-rounded-[6px] tw-border-[1px] tw-border-solid border-[#d1d5db]"
+                id="ward"
+              >
+                <option value="" selected>Ward</option>
+              </select>
+            </div>
+            <h2 class="tw-mt-6 tw-capitalize" id="result"></h2>
+
+            <span class="p-float-label tw-block tw-mt-6">
+              <textarea
+                [(ngModel)]="addressDetail"
+                id="float-input"
+                rows="5"
+                cols="66.5"
+                pInputTextarea
+              ></textarea>
+              <label for="float-input">Address Detail</label>
+            </span>
+
+            <p-button
+              (click)="handleAddNewAddress()"
+              class="tw-block tw-mt-6"
+              label="Confirm"
+              severity="success"
+            ></p-button>
+          </p-dialog>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="tw-relative tw-overflow-x-auto tw-shadow-md tw-rounded-lg tw-mt-6"
+    >
+      <div>
+        <div
+          class="tw-h-12 tw-w-full tw-flex tw-justify-between tw-py-0 tw-px-3 tw-bg-gray-50 tw-items-center"
+        >
+          <h4
+            class="tw-basis-[40%] tw-uppercase tw-font-bold tw-text-gray-500 tw-dark:text-gray-400 tw-text-lg"
+          >
+            Product
+          </h4>
+          <h4
+            class="tw-font-bold tw-uppercase tw-text-gray-500 tw-dark:text-gray-400 tw-text-lg"
+          >
+            Price
+          </h4>
+          <h4
+            class="tw-font-bold tw-uppercase tw-text-gray-500 tw-dark:text-gray-400 tw-text-lg"
+          >
+            Quantity
+          </h4>
+          <h4
+            class="tw-font-bold tw-uppercase tw-text-gray-500 tw-dark:text-gray-400 tw-text-lg"
+          >
+            Total
+          </h4>
+        </div>
+        <div>
+          <!-- start item -->
+          <div *ngIf="productCart.length > 0; else elseBlock">
+            <div
+            *ngFor="let item of productCart; index as i"
+            class="tw-flex tw-flex-wrap tw-justify-between tw-items-center tw-px-2 tw-mb-[1px] tw-border-b-[1px] tw-border-solid tw-border-blue-100"
+          >
+            <div
+              class="tw-basis-[40%] tw-font-bold tw-text-gray-500 tw-dark:text-gray-400 tw-text-lg"
+            >
+              <div
+                class="tw-flex tw-items-center tw-justify-start tw-gap-2 tw-p-4 tw-rounded-[6px] tw-overflow-hidden"
+              >
+                <img
+                  [src]='getImgCart(item.idProduct)'
+                  class="tw-w-16 tw-md:w-32 tw-max-w-full tw-max-h-full tw-rounded-[6px]"
+                  alt="Apple Watch"
+                />
+                <span class="tw-text-lg tw-font-medium tw-capitalize tw-ml-3">{{getNameCart(item.idProduct)}}</span>
+                <span class="tw-text-lg"> Phân Loại Hàng: {{getNameCart(item.idProduct,true)}},  {{getSizeCart(item.idSize)}}, {{getColorCart(item.idColor)}}</span>
+              </div>
+            </div>
+            <div
+              class="tw-font-bold tw-basis-[20%] tw-text-end tw-uppercase tw-text-gray-500 tw-dark:text-gray-400 tw-text-lg"
+            >
+              <span
+                class="tw-px-6 tw-py-4 tw-font-semibold tw-text-gray-900 tw-dark:text-white"
+              >
+                ${{getPriceCart(item.idProduct)}}
+              </span>
+            </div>
+            <div
+              class="tw-font-bold tw-basis-[20%] tw-text-end tw-uppercase tw-text-gray-500 tw-dark:text-gray-400 tw-text-lg"
+            >
+              <span class="tw-px-6 tw-py-4">{{item.quantity}}</span>
+            </div>
+            <div
+              class="tw-font-bold tw-basis-[20%] tw-text-end tw-uppercase tw-text-gray-500 tw-dark:text-gray-400 tw-text-lg"
+            >
+              <span class="tw-px-6 tw-py-4">${{getPriceTotalCart(item.idProduct,item.quantity)}}</span>
+            </div>
+            <div
+              class="tw-bg-white tw-w-[100%] tw-py-3 tw-px-3 tw-flex-1 tw-flex tw-justify-between"
+            >
+              <div>
+                <div class="tw-flex tw-gap-4 tw-mt-2">
+                  <span
+                    (click)="op.toggle($event)"
+                    class="tw-cursor-pointer tw-text-[#6d28d9]"
+                    >Voucher Other</span
+                  >
+                  <p-overlayPanel #op>
+                    <ng-template pTemplate="content">
+                      <h4 class="tw-text-3xl tw-font-bold">Voucher SHOP.CO</h4>
+                      <div
+                        class="tw-flex tw-justify-between tw-items-center tw-gap-2 tw-mt-2"
+                      >
+                        <input
+                          pInputText
+                          type="text"
+                          class="p-inputtext-sm"
+                          placeholder="Voucher my shop.co"
+                          [(ngModel)]="value3"
+                        />
+                        <p-button label="Apply"></p-button>
+                      </div>
+                    </ng-template>
+                  </p-overlayPanel>
+
+                 
+                </div>
+                
+              </div>
+              <div class="tw-flex tw-gap-24 tw-items-center">
+                <h5>Đơn vị vận chuyển:</h5>
+                <div class="tw-mt-[-15px]">
+                  <h1 class="tw-font-semibold">{{item.typetranfer?.name}}</h1>
+                  <h5>Thời gian giao hàng: {{item.typetranfer?.day}}</h5>
+                </div>
+
+                <span class="tw-cursor-pointer tw-text-base tw-text-teal-400" (click)="showDialogTranfer(item.id)">Thay đổi</span>
+                  
+               
+            
+
+                <h5 class="tw-text-color-text-sales">${{item.typetranfer?.price}}</h5>
+              </div>
+            </div>
+            </div>
+          </div>
+          <!-- end item -->
+          <ng-template #elseBlock
+            >No cart Oder</ng-template
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="tw-mt-6">
+      <div
+        class="tw-h-[100px] tw-flex tw-justify-between tw-items-center tw-bg-color-bg-lg"
+      >
+        <h1 class="tw-text-xl">Phương thức thanh toán</h1>
+        <div class="card flex justify-content-center">
+          <p-dropdown
+            [options]="cities"
+            [(ngModel)]="selectedCity"
+            optionLabel="name"
+            [showClear]="true"
+            placeholder="Select a pay"
+          ></p-dropdown>
+        </div>
+      </div>
+      <div class="tw-flex tw-justify-end tw-mt-5">
+        <div class="tw-basis-[30%]">
+          <div class="tw-flex tw-justify-between tw-mb-4">
+            <span>Tổng tiền hàng </span>
+            <span>${{totalMoney}}</span>
+          </div>
+          <div class="tw-flex tw-justify-between tw-mb-4">
+            <span>Phí vận chuyển </span>
+            <span>${{totalShip}}</span>
+          </div>
+          <div class="tw-flex tw-justify-between tw-mb-4">
+            <span>Tổng cộng Voucher giảm giá: </span>
+            <span>${{totalVoucher}}</span>
+          </div>
+          <div class="tw-flex tw-justify-between tw-mb-4">
+            <span>Tổng Thanh Toán: </span>
+            <span class="tw-text-xl tw-font-bold">${{totalPay}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="tw-flex tw-justify-end tw-mt-5">
+        <p-button
+          severity="info"
+          [disabled]="addressArr.length == 0 || !selectedCity"
+          (click)="handleODder()"
+          label="Đặt Hàng"
+        ></p-button>
+      </div>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>
+
+<p-dialog
+header="Thay đổi đơn vị vận chuyển"
+[(visible)]="visibleTranfer"
+[modal]="true"
+[style]="{ width: '50vw' }"
+[draggable]="false"
+[resizable]="false"
+>
+<div>
+  <div class="card flex justify-content-center">
+    <div class="tw-flex tw-flex-col tw-gap-3">
+      <div
+      *ngFor="let tranfer of tranfers"
+      class="field-checkbox tw-flex tw-items-start tw-gap-2 tw-border-b-[1px] tw-border-solid tw-border-[#69696969] tw-pb-2"
+    >
+      <p-radioButton
+        class="tw-mt-1"
+        [inputId]="tranfer.id"
+        name="address"
+        [value]="tranfer"
+        [(ngModel)]="selecttranfers"
+      ></p-radioButton>
+      <div class="tw-flex tw-flex-col tw-gap-2">
+        <span class="tw-font-semibold">{{tranfer.name}}</span>
+        <label for="">Nhận hàng vào ngày: {{tranfer.day}}</label>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<p-button
+  (click)="handleChangeTranfer()"
+  class="tw-block tw-mt-6"
+  label="Confirm"
+  severity="success"
+></p-button>
+</p-dialog>

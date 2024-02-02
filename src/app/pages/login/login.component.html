@@ -1,0 +1,30 @@
+<div class="tw-w-full tw-h-[100vh] tw-bg-color-item-bg tw-flex tw-items-center tw-justify-center">
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="tw-max-w-sm tw-mx-auto">
+      <div class="">
+        <label for="email" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Your email</label>
+        <input type="email" id="email" class="tw-shadow-sm tw-mb-1 tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg tw-focus:ring-blue-500 tw-focus:border-blue-500 tw-block tw-w-full tw-p-2.5 tw-dark:bg-gray-700 tw-dark:border-gray-600 tw-dark:placeholder-gray-400 tw-dark:text-white tw-dark:focus:ring-blue-500 tw-dark:focus:border-blue-500 tw-dark:shadow-sm-light" placeholder="name@flowbite.com" formControlName="email" required>
+        <div style="color:red" *ngIf="myForm.get('email')?.invalid && (myForm.get('email')?.dirty || myForm.get('email')?.touched)">
+          <span *ngIf="myForm.get('email')?.errors?.['required']">Vui lòng nhập email</span>
+          <span *ngIf="myForm.get('email')?.errors?.['email']">Vui lòng nhập đúng định dạng email</span>
+      </div> <br>
+      </div>
+    <div class="">
+      <label for="password" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white">Your password</label>
+      <input type="password" id="password" class="tw-shadow-sm tw-mb-1 tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 tw-text-sm tw-rounded-lg tw-focus:ring-blue-500 tw-focus:border-blue-500 tw-block tw-w-full tw-p-2.5 tw-dark:bg-gray-700 tw-dark:border-gray-600 tw-dark:placeholder-gray-400 tw-dark:text-white tw-dark:focus:ring-blue-500 tw-dark:focus:border-blue-500 tw-dark:shadow-sm-light tw-min-w-[300px]" formControlName="password" required>
+      <div style="color:red" *ngIf="myForm.get('password')?.invalid && (myForm.get('password')?.dirty || myForm.get('password')?.touched)">
+        <span *ngIf="myForm.get('password')?.errors?.['required']">Vui lòng nhập Passwrod</span>
+        <span *ngIf="myForm.get('password')?.errors?.['minLength']">Vui lòng nhập ít nhất 4 ký tự</span>
+    </div> <br>
+    </div>
+        
+        <div class="tw-mb-5">
+          <label for="terms"class="tw-block tw-ms-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-gray-300">I forgot password <a  routerLink="/forgot-password" href="#" class="tw-text-blue-600 tw-underline tw-hover:underline tw-dark:text-blue-500">give password</a></label>
+          <label for="terms" class="tw-block tw-ms-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-gray-300">I have't accout<a href="#" class="tw-text-blue-600 tw-ml-1 tw-underline tw-hover:underline tw-dark:text-blue-500 ml"
+            routerLink="/signup"
+            >Signup</a></label>
+        </div>
+        <button type="submit" class="tw-text-white tw-bg-blue-700 tw-hover:bg-blue-800 tw-focus:ring-4 tw-focus:outline-none tw-focus:ring-blue-300 tw-font-medium tw-rounded-lg tw-text-sm tw-px-5 tw-py-2.5 tw-text-center tw-dark:bg-blue-600 tw-dark:hover:bg-blue-700 tw-dark:focus:ring-blue-800">Log In</button>
+      </form>
+      
+</div>
+<p-toast></p-toast>

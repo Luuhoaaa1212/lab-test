@@ -1,0 +1,263 @@
+<div
+  class="tw-w-full tw-min-h-[100vh] tw-bg-color-item-bg tw-pt-[100px] tw-pb-[150px] tw-flex tw-justify-start tw-px-[220px]"
+>
+  <div class="tw-min-w-[200px] tw-bg-color-item-bg tw-min-h-[800px] tw-pt-16">
+    <ul class="tw-text-black">
+      <li class="tw-py-3 tw-px-3 tw-text-xl">
+        <a routerLink="/user/profile" href="">Profile</a>
+      </li>
+      <li class="tw-py-3 tw-px-3 tw-text-xl">
+        <a routerLink="/user/purchase" href="">Purchase</a>
+      </li>
+    </ul>
+  </div>
+  <div>
+    <div class="card tw-min-w-[1160px]">
+      <p-tabView>
+        <p-tabPanel header="Tất cả">
+          <div *ngIf="oderData.length > 0" class="tw-flex tw-flex-col">
+            <!-- item oder -->
+            <div
+              *ngFor="let oder of oderData"
+              class="tw-flex tw-flex-col tw-border-b-[1px] tw-pb-4 tw-border-solid tw-border-color-bg-sales tw-min-w-[1010px]"
+            >
+              {{ getOderDetailById(oder._id) }}
+              <div
+                class="tw-h-[40px] tw-bg-color-bg-lg tw-flex tw-justify-between tw-mt-2"
+              >
+                <div>
+                  Thời gian đặt hàng: {{ parseMongoDBDateTime(oder.createdAt) }}
+                </div>
+                <div>
+                  <span *ngIf="status == 3" class="tw-text-red-600"
+                    >Đã hủy</span
+                  >
+                  <span *ngIf="status == 0" class="tw-text-[#f97316]"
+                    >Chờ Xác nhận</span
+                  >
+                  <span *ngIf="status == 1" class="tw-text-[#16a34a]"
+                    >Đang giao đến bạn</span
+                  >
+
+                  <div
+                    *ngIf="status == 2"
+                    class="tw-flex tw-items-center tw-gap-2 tw-text-[#00bfa5]"
+                  >
+                    <div class="tw-mr-1">
+                      <span class="pi pi-car"></span>
+                    </div>
+                    <span>
+                      Đơn hàng đã được giao thành công({{
+                        parseMongoDBDateTime(time)
+                      }})</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div
+                *ngFor="let item of dataDetails"
+                class="tw-flex tw-justify-between tw-items-center"
+              >
+                <div class="tw-flex tw-gap-2 tw-py-3">
+                  <div
+                    class="tw-w-[100px] tw-h-[100px] tw-overflow-hidden tw-rounded-lg tw-border-solid tw-border-[2px] tw-border-[#69696969]"
+                  >
+                    <img
+                      class="tw-rounded-lg tw-w-full tw-h-full tw-object-cover"
+                      [src]="getImgCart(item.product_id)"
+                      alt=""
+                    />
+                  </div>
+                  <div>
+                    <span class="tw-block tw-capitalize tw-font-semibold">
+                      {{ getNameCart(item.product_id) }}
+                    </span>
+                    <span class="tw-block"
+                      >Phân loại hàng: {{ getNameCart(item.product_id, true) }},
+                      {{ getSizeCart(item.size_id) }} ,{{
+                        getColorCart(item.color_id)
+                      }}</span
+                    >
+                    <span class="tw-block">x{{ item.quantity }}</span>
+                  </div>
+                </div>
+                <div class="tw-flex tw-items-center tw-gap-3 tw-justify-center">
+                  <span
+                    *ngIf="getPriceCart(item.product_id, true) !== 0"
+                    class="tw-block tw-opacity-70 tw-line-through"
+                    >${{ getPriceCart(item.product_id, true) }}</span
+                  >
+                  <span class="tw-block tw-text-color-text-sales"
+                    >${{ getPriceCart(item.product_id) }}</span
+                  >
+                </div>
+              </div>
+
+              <div class="tw-flex tw-justify-between">
+                <div
+                  class="tw-flex tw-justify-between tw-items-center tw-w-full tw-gap-2"
+                >
+                  <h1 class="tw-font-bold">
+                    Tổng Tiền: ${{ getPriceTotal(oder._id) }}
+                  </h1>
+                  <div class="tw-flex tw-gap-2 tw-mt-3">
+                    <div
+                      *ngIf="status == 0"
+                      class="card flex justify-content-center"
+                    >
+                      <p-button
+                        (click)="showDialogReason(oder._id)"
+                        severity="danger"
+                        class="tw-capitalize"
+                        label="Hủy Đơn Hàng"
+                      ></p-button>
+                    </div>
+
+                    <div
+                      *ngIf="status == 1"
+                      class="card flex justify-content-center"
+                    >
+                      <p-button
+                        (click)="handleViewShipping(oder._id, true)"
+                        severity="info"
+                        class="tw-capitalize"
+                        label="Xem đơn hàng"
+                      ></p-button>
+                    </div>
+
+                    <div
+                      *ngIf="status == 2"
+                      class="card tw-flex tw-justify-center tw-gap-2"
+                    >
+                      <p-button
+                        severity="primary"
+                        class="tw-capitalize"
+                        label="Mua lại"
+                      ></p-button>
+                      <p-button
+                        label="Xem Chi Tiết"
+                        (click)="handleViewShipping(oder._id, false)"
+                        [outlined]="true"
+                      ></p-button>
+                    </div>
+
+                    <div
+                      *ngIf="status == 3"
+                      class="card tw-flex justify-content-center tw-gap-2"
+                    >
+                      <p-button
+                        severity="primary"
+                        class="tw-capitalize"
+                        label="Mua lại"
+                      ></p-button>
+                      <p-button
+                        (click)="showDialogReasonDetail(oder._id)"
+                        class="tw-capitalize"
+                        label="xem chi tiết hủy đơn"
+                        [outlined]="true"
+                        severity="danger"
+                      ></p-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end oder -->
+          </div>
+          <div *ngIf="oderData.length == 0">
+            <h1>hiện chưa có sản phẩm nào</h1>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  header=" Chọn Lý do hủy đơn"
+  [(visible)]="visibleReason"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div>
+    <div class="card flex justify-content-center">
+      <div class="tw-flex tw-flex-col tw-gap-3">
+        <div
+          *ngFor="let reason of reasonAll"
+          class="field-checkbox tw-flex tw-items-start tw-gap-2 tw-border-b-[1px] tw-border-solid tw-border-[#9a9a9a69] tw-pb-5"
+        >
+          <p-radioButton
+            class="tw-mt-1"
+            [inputId]="reason._id"
+            name="address"
+            [value]="reason"
+            [(ngModel)]="selectReason"
+          ></p-radioButton>
+          <div class="tw-flex tw-flex-col tw-gap-2">
+            <span class="tw-font-semibold">{{ reason.name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-button
+    (click)="handleChangeReason()"
+    [disabled]="selectReason.length == 0"
+    class="tw-block tw-mt-6"
+    label="Xác Nhận Hủy"
+    severity="success"
+  ></p-button>
+</p-dialog>
+<p-dialog
+  header="Lý do hủy đơn"
+  [(visible)]="visibleReasonDetail"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div>
+    <div class="card flex justify-content-center">
+      <div class="tw-flex tw-flex-col tw-gap-3">
+        <div>
+          <h1 class="tw-capitalize">mã đơn hàng: {{ reasonDetail.oder_id }}</h1>
+          <h1>
+            Đã hủy đơn hàng vào
+            {{ parseMongoDBDateTime(reasonDetail.createdAt) }}
+          </h1>
+          <h1>Lý do :{{ reasonDetail.name }}</h1>
+          <h1 class="tw-capitalize">yêu cầu bởi: người mua</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  header="Đang Vận Chuyển"
+  [(visible)]="visibleShipping"
+  [modal]="true"
+  [style]="{ width: '95vw', height: '32vh' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div>
+    <div class="card flex justify-content-center">
+      <div class="tw-flex tw-flex-col tw-gap-3">
+        <h1>Đơn vị vận chuyển: {{ type_tranfer ? "Nhanh" : "Tiết Kiệm" }}</h1>
+        <div class="card">
+          <p-steps
+            [model]="items"
+            [activeIndex]="activeIndexShipping"
+            [readonly]="true"
+          >
+          </p-steps>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+<p-toast></p-toast>

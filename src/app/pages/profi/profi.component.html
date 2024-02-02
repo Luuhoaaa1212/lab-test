@@ -1,0 +1,156 @@
+<div class="tw-w-full tw-h-[100vh] tw-bg-color-bg-lg tw-pt-[100px] tw-flex  tw-justify-start tw-px-[220px]">
+    <div class="tw-min-w-[200px] tw-bg-color-item-bg tw-h-[100vh] tw-pt-16">
+        <ul class="tw-text-black">  
+            <li class="tw-py-3 tw-px-3 tw-text-xl">
+                <a routerLink="/user/profile" href="">Profile</a>
+            </li>
+            <li class="tw-py-3 tw-px-3 tw-text-xl">
+                <a routerLink="/user/purchase" href="">Purchase</a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="tw-w-full">
+        <div class="card">
+            <p-tabView>
+                <p-tabPanel header="Profile">
+                   <div>
+                        <form action="">
+                            <div class="tw-py-2 tw-flex tw-gap-2 tw-items-center">
+                                <label class="tw-block tw-mr-3 tw-min-w-[120px]" for="">UserName</label>
+                                 <input type="text">
+                            </div>
+                            <div class="tw-py-2 tw-flex tw-gap-2 tw-items-center">
+                                <label class="tw-block tw-mr-3 tw-min-w-[120px]" for="">Email</label>
+                                 <input type="text">
+                            </div>
+                            <div class="tw-py-2 tw-flex tw-gap-2 tw-items-center">
+                                <label class="tw-block tw-mr-3 tw-min-w-[120px]" for="">Phone Number</label>
+                                 <input type="text">
+                            </div>
+                            <div class="tw-py-2 tw-flex tw-gap-2 tw-items-center">
+                                <label class="tw-block tw-mr-3 tw-min-w-[120px]" for="">Sex</label>
+                                 <div class="tw-flex tw-gap-5">
+                                   <div class="tw-flex tw-justify-center tw-items-center tw-gap-2">
+                                    <label for="">Male</label>
+                                    <input type="radio" value="Male" name="sex" id="">
+                                   </div>
+                                   <div class="tw-flex tw-justify-center tw-items-center tw-gap-2">
+                                    <label for="">FeMale</label>
+                                    <input type="radio" value="Male" name="sex" id="">
+                                   </div>
+                                 </div>
+                            </div>
+                            <div class="card flex justify-content-center tw-mt-3">
+                                <button pButton pRipple label="Update" class="p-button-success"></button>
+                            </div>
+                        </form>
+                   </div>
+                </p-tabPanel>
+                <p-tabPanel header="Address">
+                   <div class="tw-flex tw-w-full tw-justify-between tw-items-center tw-mb-4">
+                        <div class="card flex justify-content-center tw-mt-3">
+                            <button (click)="showDialog1()" pButton pRipple label="New Address" severity="info"></button>
+                        </div>
+
+                        <p-dialog class="tw-max-w-[700px]" header="New Address" [(visible)]="visible1" [modal]="true" [style]="{ width: '40%' }" [draggable]="false" [resizable]="false">
+                            <div class="tw-flex tw-gap-4 tw-justify-between tw-mb-6">
+                                <input pInputText type="text" [(ngModel)]="userName" placeholder="Username"/>
+                                <input pInputText type="text" [(ngModel)]="phoneNumer"   placeholder="Phone Number" />
+                            </div>
+                            <div class="tw-flex tw-gap-[17px] tw-w-[100%]">
+                                <select (change)="onSelectChangeCity()" class="tw-max-w-[200px] tw-min-w-[200px] city tw-rounded-[6px] tw-border-[1px] tw-border-solid border-[#d1d5db]" id="city">
+                                <option value="" selected>Chọn tỉnh thành</option>           
+                                </select>
+                                          
+                                <select (change)="onSelectChangeDistrict()" class="tw-max-w-[200px] tw-min-w-[200px] tw-rounded-[6px] tw-border-[1px] tw-border-solid border-[#d1d5db]" id="district">
+                                <option value="" selected>District</option>
+                                </select>
+                                
+                                <select (change)="onSelectChangeWard()" class="tw-max-w-[200px] tw-min-w-[200px] tw-rounded-[6px] tw-border-[1px] tw-border-solid border-[#d1d5db]" id="ward">
+                                <option value="" selected>Ward</option>
+                                </select>
+                            </div> 
+                            <h2 class="tw-mt-6 tw-capitalize" id="result"></h2>
+    
+                            <span class="p-float-label tw-block tw-mt-6">
+                                <textarea id="float-input" rows="5" cols="66.5" pInputTextarea></textarea>
+                                <label for="float-input">Address Detail</label>
+                            </span>
+                            <p-button class="tw-block tw-mt-6" label="Confirm" severity="success"></p-button>
+                        </p-dialog>
+
+                   </div>
+                   <div class="tw-flex tw-flex-col">
+                    <!-- //start item address -->
+                    <div class="tw-flex tw-justify-between tw-items-center tw-border-b tw-border-solid tw-pb-5">
+                        <div class="tw-my-2">
+                            <div class="tw-flex">
+                                <h1>Lưu việt hòa |</h1>
+                                <span class="tw-block">(+84) 98774843332</span>
+                            </div>
+                            <div>
+                                <span>146/13/6, Tô Ky
+                                    Phường Đông Hưng Thuận, Quận 12, TP. Hồ Chí Minh</span>
+                            </div>
+                            <div class="tw-mt-2">
+                                <span class="tw-py-1 tw-px-3 tw-border-[1px] tw-border-solid tw-border-color-text-sales">default</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="card flex justify-content-center tw-mt-3">
+                                <button pButton pRipple label="Update Address" class="p-button-success"></button>
+                            </div>
+                            <div class="card flex justify-content-center tw-mt-3">
+                                <p-button label="default settings" [outlined]="true"></p-button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- //end item address -->
+                    <div class="tw-flex tw-justify-between tw-items-center tw-border-b tw-border-solid tw-border-r-red-300 tw-pb-5">
+                        <div class="tw-my-2">
+                            <div class="tw-flex">
+                                <h1>Lưu việt hòa |</h1>
+                                <span class="tw-block">(+84) 98774843332</span>
+                            </div>
+                            <div>
+                                <span>146/13/6, Tô Ky
+                                    Phường Đông Hưng Thuận, Quận 12, TP. Hồ Chí Minh</span>
+                            </div>
+                            <div class="tw-mt-2">
+                                <span class="tw-py-1 tw-px-3 tw-border-[1px] tw-border-solid tw-border-color-text-sales">default</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="card flex justify-content-center tw-mt-3">
+                                <button pButton pRipple label="Update Address" class="p-button-success"></button>
+                            </div>
+                            <div class="card flex justify-content-center tw-mt-3">
+                                <p-button label="default settings" [outlined]="true"></p-button>
+                            </div>
+                        </div>
+                    </div>
+                   </div>
+                </p-tabPanel>
+                <p-tabPanel header="Password">
+                    <div>
+                        <form action="">
+                            <div class="tw-py-2 tw-flex tw-gap-2 tw-items-center">
+                                <label class="tw-block tw-mr-3 tw-min-w-[150px]" for="">PassWord Current</label>
+                                 <input type="text">
+                            </div>
+                            <div class="tw-py-2 tw-flex tw-gap-2 tw-items-center">
+                                <label class="tw-block tw-mr-3 tw-min-w-[150px]" for="">New Passwork</label>
+                                 <input type="text">
+                            </div>
+                            <div class="card flex justify-content-center tw-mt-3">
+                                <button pButton pRipple label="Update Password" class="p-button-success"></button>
+                            </div>
+                        </form>
+                    </div>
+                </p-tabPanel>
+            </p-tabView>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<div
+  class="tw-py-5 tw-px-6 tw-flex tw-gap-6 tw-rounded-[20px] tw-mt-[70px] tw-items-center tw-justify-center"
+>
+  <div
+    class="tw-py-4 tw-px-4 tw-basis-[90%] tw-border-solid tw-border-[1px] tw-border-color-bg-sales tw-rounded-[10px]"
+  >
+    <h1 class="tw-text-xl tw-font-bold tw-text-black tw-mb-4">Fillter</h1>
+    <div class="tw-flex tw-gap-6 tw-flex-wrap">
+      <div class="card flex justify-content-center tw-w-[360px]">
+        <p-multiSelect
+        [style]="{'width': '100%'}"
+          [options]="categories"
+          [(ngModel)]="selectedCategory"
+          placeholder="Select Category"
+          optionLabel="name"
+          display="chip"
+          [showClear]="true"
+        ></p-multiSelect>
+      </div>
+      <div class="card flex justify-content-center tw-w-[250px]">
+        <p-multiSelect
+        [style]="{'width': '100%'}"
+          [options]="sizes"
+          [(ngModel)]="selectedSizes"
+          placeholder="Select Size"
+          optionLabel="name"
+          id="id"
+          display="chip"
+          [showClear]="true"
+        ></p-multiSelect>
+      </div>
+      <div class="card flex justify-content-center tw-w-[250px]">
+        <p-multiSelect
+        [style]="{'width': '100%'}"
+          [options]="colors"
+          [(ngModel)]="selectedColors"
+          placeholder="Select Color"
+          optionLabel="name"
+          display="chip"
+          [showClear]="true"
+        ></p-multiSelect>
+      </div>
+      <div class="tw-min-w-[140px]">
+        <span class="tw-text-black tw-text-sm tw-font-normal tw-block tw-mb-2">{{value}}$</span>
+        <p-slider [max]="200" [(ngModel)]="value" class="w-full"></p-slider>
+    </div>
+    <div class="card flex justify-content-center">
+        <p-selectButton [options]="stateOptions" [(ngModel)]="valueBtn" optionLabel="label" optionValue="value"></p-selectButton>
+    </div>
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input type="text" placeholder="Seach Product..." pInputText [(ngModel)]="valueSeach" />
+  </span>
+    <button (click)="handleClickFillters()" pButton pRipple label="Apply Fillter" class="p-button-success"></button>
+    </div>
+  </div>
+</div>

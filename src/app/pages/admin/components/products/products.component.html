@@ -1,0 +1,343 @@
+<div class="card">
+  <p-tabView>
+    <p-tabPanel header="Products">
+      <div>
+        <p-button
+          (click)="showDialog()"
+          icon="pi pi-external-link"
+          label="New Product"
+        ></p-button>
+        <p-dialog
+          [header]="headerDialog"
+          [(visible)]="visible"
+          [modal]="true"
+          [style]="{ width: '50vw', height: '80%' }"
+          [draggable]="false"
+          [resizable]="false"
+        >
+          <div class="tw-flex tw-gap-4">
+            <input
+              pInputText
+              type="text"
+              placeholder="Name"
+              [(ngModel)]="name"
+              [value]="isEdit && productEdit.name "
+            />
+            <input
+              pInputText
+              type="text"
+              placeholder="Price"
+              [(ngModel)]="price"
+              [value]="isEdit && productEdit.price"
+            />
+            <input
+              pInputText
+              type="text"
+              placeholder="Price Old"
+              [(ngModel)]="price_old"
+              [value]="isEdit && productEdit.price_old"
+            />
+          </div>
+
+          <form action="" [formGroup]="uploadForm">
+            <div class="tw-mt-3">
+              <label
+                class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white"
+                for="multiple_files"
+                >Avt</label
+              >
+              <input
+                class="tw-block tw-w-full tw-text-sm tw-text-gray-900 tw-border tw-border-gray-300 tw-rounded-lg tw-cursor-pointer tw-bg-gray-50 tw-dark:text-gray-400 tw-focus:outline-none tw-dark:bg-gray-700 tw-dark:border-gray-600 tw-dark:placeholder-gray-400"
+                id="multiple_files"
+                type="file"
+                (change)="handleFileSelect($event)"
+                name="avt"
+              />
+            </div>
+          </form>
+
+          <div class="card tw-flex tw-justify-content-center tw-my-3 tw-gap-3">
+            <div>
+              <form [formGroup]="formGroup">
+                <p-dropdown
+                  formControlName="selectedCity"
+                  [options]="brands"
+                  [autoOptionFocus]="true"
+                  [(ngModel)]="selectedBrand"
+                  optionLabel="name"
+                  placeholder="Select a brand"
+                ></p-dropdown>
+              </form>
+            </div>
+            <div class="card flex justify-content-center">
+              <p-multiSelect
+                class="tw-w-[100px]"
+                [options]="colors"
+                [(ngModel)]="selectedColors"
+                placeholder="Select Colors"
+                optionLabel="name"
+                display="chip"
+                [showClear]="true"
+              ></p-multiSelect>
+            </div>
+            <div class="card flex justify-content-center">
+              <p-multiSelect
+                class="tw-w-[100px]"
+                [options]="sizes"
+                [(ngModel)]="selectedSizes"
+                placeholder="Select sizes"
+                optionLabel="name"
+                display="chip"
+                [showClear]="true"
+              ></p-multiSelect>
+            </div>
+          </div>
+
+          <div>
+            <form action="">
+              <label
+                class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 tw-dark:text-white"
+                for="multiple_files"
+                >Img Des</label
+              >
+              <input
+                class="tw-block tw-w-full tw-text-sm tw-text-gray-900 tw-border tw-border-gray-300 tw-rounded-lg tw-cursor-pointer tw-bg-gray-50 tw-dark:text-gray-400 tw-focus:outline-none tw-dark:bg-gray-700 tw-dark:border-gray-600 tw-dark:placeholder-gray-400"
+                id="multiple_files"
+                type="file"
+                name="uploadFormDes"
+                (change)="handleFileSelectDes($event)"
+                multiple
+              />
+            </form>
+          </div>
+          <div class="tw-mt-3">
+            <span class="p-float-label">
+              <textarea
+                [(ngModel)]="des"
+                id="float-input"
+                rows="5"
+                cols="30"
+                [value]="isEdit && productEdit.des"
+                pInputTextarea
+              ></textarea>
+              <label for="float-input">Description Product</label>
+            </span>
+          </div>
+          <div>
+            <p-button
+              (click)="handleAddProduct()"
+              icon="pi pi-external-link"
+              [label] = "btnTextDialog"
+            ></p-button>
+          </div>
+        </p-dialog>
+      </div>
+      <div class="tw-my-10">
+        <div class="tw-relative tw-max-h-[638px] tw-overflow-y-auto tw-shadow-md tw-rounded-lg">
+          <table
+            class="tw-w-full tw-text-sm tw-text-left rtl:tw-text-right tw-text-gray-500 dark:text-gray-400"
+          >
+            <thead
+              class="tw-text-xs tw-text-gray-700 tw-uppercase tw-bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+            >
+              <tr>
+                <th scope="col" class="tw-px-6 tw-py-3">Id</th>
+                <th scope="col" class="tw-px-6 tw-py-3">Name</th>
+                <th scope="col" class="tw-px-6 tw-py-3">Price</th>
+                <th scope="col" class="tw-px-6 tw-py-3">Update-At</th>
+                <th scope="col" class="tw-px-6 tw-py-3">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+              *ngFor="let product of products"
+                class="tw-bg-white tw-border-b tw-dark:bg-gray-800 tw-dark:border-gray-700 tw-hover:bg-gray-50 tw-dark:hover:bg-gray-600"
+              >
+                <td class="tw-px-6 tw-py-4">{{product._id}}</td>
+                <th
+                  scope="row"
+                  class="tw-flex tw-items-center tw-px-6 tw-py-4 tw-text-gray-900 tw-whitespace-nowrap tw-dark:text-white"
+                >
+                  <div class="tw-w-12 tw-h-12 tw-rounded-full tw-overflow-hidden">
+                    <img
+                    class="tw-object-cover tw-w-full tw-h-full tw-rounded-full "
+                    src={{getImgByNameImg(product.avt)}}
+                  />
+                  </div>
+                  <div class="tw-ps-3">
+                    <div class="tw-text-base tw-font-semibold">{{product.name}}</div>
+                  </div>
+                </th>
+                <td class="tw-px-6 tw-py-4">${{product.price}}</td>
+                <td class="tw-px-6 tw-py-4">
+                  <div class="tw-flex tw-items-center">{{ formatDay(product.updatedAt) }}</div>
+                </td>
+                <td class="tw-px-6 tw-py-4 tw-flex tw-gap-3">
+                  <p-button
+                    (click)="showDialogDetail(product._id)"
+                    severity="info"
+                    [raised]="true"
+                    label="Detail"
+                  ></p-button>
+                  <p-button
+                    severity="secondary"
+                    (click)="handleEditProduct(product)"
+                    [raised]="true"
+                    label="Edit"
+                  ></p-button>
+                  <div class="card flex justify-content-center gap-2">
+                    <p-button (click)="confirm2($event,product._id,product.name)" icon="pi pi-times" label="Delete" styleClass="p-button-danger"></p-button>
+                </div>
+                </td>
+                
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="Colors">
+      <div class="tw-relative tw-overflow-x-auto">
+        <table
+          class="tw-w-full tw-text-sm tw-text-left tw-rtl:tw-text-right tw-text-gray-500 tw-dark:tw-text-gray-400"
+        >
+          <thead
+            class="tw-text-xs tw-text-gray-700 tw-uppercase tw-bg-gray-50 tw-dark:tw-bg-gray-700 tw-dark:tw-text-gray-400"
+          >
+            <tr>
+              <th scope="col" class="tw-px-6 tw-py-3">Id</th>
+              <th scope="col" class="tw-px-6 tw-py-3">Name</th>
+              <th scope="col" class="tw-px-6 tw-py-3">Create_At</th>
+              <th scope="col" class="tw-px-6 tw-py-3">Update_At</th>
+              <th scope="col" class="tw-px-6 tw-py-3">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let color of colors"
+              class="tw-bg-white tw-border-b tw-dark:tw-bg-gray-800 tw-dark:tw-border-gray-700"
+            >
+              <th
+                scope="row"
+                class="tw-px-6 tw-py-4 tw-font-medium tw-text-gray-900 tw-whitespace-nowrap tw-dark:tw-text-white"
+              >
+                {{ color._id }}
+              </th>
+              <td class="tw-px-6 tw-py-4">{{ color.name }}</td>
+              <td class="tw-px-6 tw-py-4">{{ formatDay(color.createdAt) }}</td>
+              <td class="tw-px-6 tw-py-4">{{ formatDay(color.updatedAt) }}</td>
+              <td class="tw-px-6 tw-py-4">Delete | Edit</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="Sizes">
+      <div class="tw-relative tw-overflow-x-auto">
+        <table
+          class="tw-w-full tw-text-sm tw-text-left tw-rtl:tw-text-right tw-text-gray-500 tw-dark:tw-text-gray-400"
+        >
+          <thead
+            class="tw-text-xs tw-text-gray-700 tw-uppercase tw-bg-gray-50 tw-dark:tw-bg-gray-700 tw-dark:tw-text-gray-400"
+          >
+            <tr>
+              <th scope="col" class="tw-px-6 tw-py-3">Id</th>
+              <th scope="col" class="tw-px-6 tw-py-3">Name</th>
+              <th scope="col" class="tw-px-6 tw-py-3">Create_At</th>
+              <th scope="col" class="tw-px-6 tw-py-3">Update_At</th>
+              <th scope="col" class="tw-px-6 tw-py-3">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let size of sizes"
+              class="tw-bg-white tw-border-b tw-dark:tw-bg-gray-800 tw-dark:tw-border-gray-700"
+            >
+              <th
+                scope="row"
+                class="tw-px-6 tw-py-4 tw-font-medium tw-text-gray-900 tw-whitespace-nowrap tw-dark:tw-text-white"
+              >
+                {{ size._id }}
+              </th>
+              <td class="tw-px-6 tw-py-4">{{ size.name }}</td>
+              <td class="tw-px-6 tw-py-4">{{ formatDay(size.createdAt) }}</td>
+              <td class="tw-px-6 tw-py-4">{{ formatDay(size.updatedAt) }}</td>
+              <td class="tw-px-6 tw-py-4">Delete | Edit</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+</div>
+<p-toast></p-toast>
+<p-dialog
+                  header="Product Detail"
+                  [(visible)]="visibleDetail"
+                  [modal]="true"
+                  [style]="{ width: '50vw' }"
+                  [draggable]="false"
+                  [resizable]="false"
+                >
+                  <div class="tw-flex tw-gap-9">
+                    <div class="card tw-flex tw-justify-start">
+                      <p-card
+                        header={{productDetail.name}}
+                        subheader={{productDetail.brand}}
+                        [style]="{ width: '360px' }"
+                      >
+                        <ng-template pTemplate="header">
+                          <img
+                          class="tw-rounded-2xl"
+                            alt="Card"
+                            src={{getImgByNameImg(productDetail.avt)}}
+                          />
+                        </ng-template>
+                        <p>
+                          {{productDetail.des}}
+                        </p>
+                      </p-card>
+                    </div>
+                    <div class="">
+                      <div
+                        class="tw-flex tw-gap-4 tw-rounded-md tw-items-center tw-justify-start tw-basis-[50%]"
+                      >
+                        <img
+                        *ngFor="let img of productDetail.imgs"
+                          class="tw-w-[70px] tw-h-[70px] tw-rounded-2xl tw-object-cover"
+                          src={{getImgByNameImg(img)}}
+                          alt=""
+                        />
+                       
+                      </div>
+
+                      <div class="tw-mt-7 tw-flex tw-items-center tw-gap-3">
+                        <div
+                        *ngFor="let color of productDetail.colors"
+                          class="tw-w-[37px] tw-h-[37px] tw-rounded-full"
+                          [style]="getStyleColorById(color)" 
+                        ></div>
+                        
+                      </div>
+                      <div class="tw-mt-7 tw-flex tw-gap-2">
+                        <div
+                        *ngFor="let size of productDetail.sizes"
+                          class="tw-bg-color-bg tw-text-black tw-py-3 tw-px-6 tw-rounded-[62px] tw-flex tw-items-center tw-justify-center"
+                        >
+                          <span class="tw-capitalize">{{getSizeById(size)}}</span>
+                        </div>
+                       
+                        
+                      </div>
+                      <div class="tw-mt-7 tw-flex tw-gap-2 tw-flex-col">
+                       <span class="tw-block"> Price: {{productDetail.price}}</span>
+                       <span> Price_old: ${{productDetail.price_old}}</span>
+                      </div>
+                      <div class="tw-mt-3 tw-flex tw-gap-2">
+                        <span> Create_At: {{ formatDay(productDetail.createAt) }}</span>
+                       </div>
+                    </div>
+                  </div>
+                </p-dialog>
+<p-confirmDialog></p-confirmDialog>
+
