@@ -10,10 +10,11 @@ import { HomeComponent } from './pages/admin/pages/home/home.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HttpClientModule,ReactiveFormsModule,FormsModule,HeaderComponent,HomeComponent,FooterComponent, RouterLink, RouterLinkActive],
+  imports: [HttpClientModule,CommonModule,ReactiveFormsModule,FormsModule,HeaderComponent,HomeComponent,FooterComponent, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
+  title = 'Assignment'
   rule:boolean = true;
   constructor(private router: Router) {}
 
