@@ -1,7 +1,6 @@
 // product.service.ts
 
 import { Injectable } from '@angular/core';
-import data from '../../../../server/data';
 import { ProductDetail, Product } from '../interfaces';
 import { ProductService as ProductService1 } from './product.service';
 import { SizeService } from './size.service';
@@ -24,7 +23,6 @@ export class ProductService {
     private address: AddressService,
   ) {}
   private productAll: Product[] = [];
-  private data = data;
   convertToDate(dateString: string): Date {
     const [day, month, year] = dateString.split('/').map(Number);
     return new Date(year, month - 1, day);
