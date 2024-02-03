@@ -19,7 +19,8 @@ import { PurchaseComponent } from './pages/purchase/purchase.component';
 
 export const routes: Routes = [
     // user
-    { path: 'home',component : HomeComponent,canActivate:[CanActivateAdmin] },
+    { path: '',component : HomeComponent,canActivate:[CanActivateAdmin] },
+    { path: 'home',component : HomeComponent },
     { path: 'category',component : CategoryComponent },
     { path: 'cart',component : CartComponent },
     { path: 'products/product-detail/:id', component: DetailComponent },
