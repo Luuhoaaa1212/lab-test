@@ -2,20 +2,20 @@ import { inject } from "@angular/core"
 import { UserService } from "./auth.service"
 import { Router } from "@angular/router";
 import { JwtHelperService } from '@auth0/angular-jwt';
-function getCookie(cname:string) {
-    let name = cname + "=";
-    let ca = document.cookie.split(';');
-    for(let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
+function getCookie(cname: string) {
+  const name = cname + '=';
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') {
+      c = c.substring(1);
     }
-    return "";
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length, c.length);
+    }
   }
+  return '';
+}  
 export const CanActivate = () => {
     let user = getCookie("jwt");
     console.log("user",user);
