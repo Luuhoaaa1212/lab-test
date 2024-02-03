@@ -18,6 +18,7 @@ function getCookie(cname:string) {
   }
 export const CanActivate = () => {
     let user = getCookie("jwt");
+    console.log("user",user);
     const router = inject(Router);
     if(user){
         return true;
