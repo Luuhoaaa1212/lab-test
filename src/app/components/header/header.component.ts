@@ -112,10 +112,11 @@ export class HeaderComponent implements OnInit {
             });
             this.deleteCookie('jwt');
 
-            setTimeout(() => {
-              location.reload();
-            }, 700);
+            // setTimeout(() => {
+            //   location.reload();
+            // }, 700);
             this.router.navigate(['home']);
+            this.authService.login();
           },
           (err) => {
             console.log(err);
