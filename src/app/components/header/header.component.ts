@@ -110,8 +110,6 @@ export class HeaderComponent implements OnInit {
               summary: 'Confirmed',
               detail: 'Log out successfully',
             });
-            this.deleteCookie('jwt');
-
             // setTimeout(() => {
             //   location.reload();
             // }, 700);

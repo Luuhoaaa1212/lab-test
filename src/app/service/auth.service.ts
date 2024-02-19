@@ -29,7 +29,6 @@ export class UserService {
     return this.http.get(`${this.apiUrl}/getAll`);
   }
  
- 
   logoutUser(): Observable<any> {
     return this.http.post(`${this.apiUrl}/logout`, { withCredentials: true });
   }
