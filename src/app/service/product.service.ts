@@ -6,6 +6,7 @@ import { getUrlBaseApi } from '../constant';
 @Injectable({
   providedIn: 'root',
 })
+
 export class ProductService {
   private apiUrl = getUrlBaseApi('product');
   constructor(private http: HttpClient) {

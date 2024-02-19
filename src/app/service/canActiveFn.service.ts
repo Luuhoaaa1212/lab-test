@@ -1,7 +1,8 @@
-import { inject } from "@angular/core"
-import { UserService } from "./auth.service"
-import { Router } from "@angular/router";
+import { inject } from '@angular/core';
+import { UserService } from './auth.service';
+import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { CookieService } from 'ngx-cookie-service';
 function getCookie(cname: string) {
   const name = cname + '=';
   const ca = document.cookie.split(';');
@@ -15,41 +16,39 @@ function getCookie(cname: string) {
     }
   }
   return '';
-}  
+}
 export const CanActivate = () => {
-    let user = getCookie("jwt");
-    console.log("user",user);
-    const router = inject(Router);
-    if(user){
-        return true;
-    }else{
-        router.navigate(['home'])
-        return false;
-    }
-}
+  let user = getCookie('jwt');
+  const router = inject(Router);
+  if (user) {
+    return true;
+  } else {
+    router.navigate(['home']);
+    return false;
+  }
+};
 export const CanActivateRoles = () => {
-  let token = getCookie("jwt");
+  let token = getCookie('jwt');
   const router = inject(Router);
   const helper = new JwtHelperService();
   const decodedToken = helper.decodeToken(token);
-  if(decodedToken.admin){
-      return true;
-  }else{
-      router.navigate(['home'])
-      return false;
+  if (decodedToken.admin) {
+    return true;
+  } else {
+    router.navigate(['home']);
+    return false;
   }
-}
+};
 export const CanActivateAdmin = () => {
-  let token = getCookie("jwt");
+  let token = getCookie('jwt');
   const router = inject(Router);
   const helper = new JwtHelperService();
   const decodedToken = helper.decodeToken(token);
- 
-  if(decodedToken.admin){
-    router.navigate(['admin/products'])
+  if (decodedToken?.admin) {
+    router.navigate(['admin/products']);
     return false;
-  }else{
-    router.navigate(['home'])
+  } else {
+    router.navigate(['home']);
     return false;
   }
-}
+};
