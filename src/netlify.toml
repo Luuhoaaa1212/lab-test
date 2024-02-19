@@ -1,0 +1,11 @@
+# FILEPATH: /d:/Spring_2024/Angular/lab/lab_a/lab_4/src/netlify.toml
+
+# Redirect all requests to the index.html file
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Set the build directory
+[build]
+  publish = "dist"
