@@ -116,6 +116,7 @@ export class HeaderComponent implements OnInit {
             //   location.reload();
             // }, 700);
             this.router.navigate(['home']);
+            
             this.authService.login();
           },
           (err) => {
