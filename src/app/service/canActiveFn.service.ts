@@ -21,9 +21,8 @@ function getCookie(cname: string) {
  export const CanActivate = async () => {
   let user = getCookie('jwt');
   const apiUrl = getUrlBaseApi('auth')
-  const res = await fetch(`${apiUrl}/user`, { credentials: 'include' })
+  const res = await fetch(`${apiUrl}/check`, { credentials: 'include' })
   const router = inject(Router);
-
   if(res.status === 200) {
     return true;
     
