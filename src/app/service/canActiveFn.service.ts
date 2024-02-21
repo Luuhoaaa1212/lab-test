@@ -23,9 +23,10 @@ function getCookie(cname: string) {
   const apiUrl = getUrlBaseApi('auth')
   const res = await fetch(`${apiUrl}/check`, { credentials: 'include' })
   const router = inject(Router);
+  console.log(res);
+  
   if(res.status === 200) {
     return true;
-    
   }else{
     router.navigate(['home']);
     return false;
