@@ -27,7 +27,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
-    { path: 'pay', component: PayComponent,canActivate:[CanActivate]},
+    { path: 'pay', component: PayComponent},
 
     { path: 'user/profile', component: ProfiComponent},
     { path: 'user/purchase', component:PurchaseComponent},

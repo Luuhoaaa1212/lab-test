@@ -18,24 +18,21 @@ function getCookie(cname: string) {
   }
   return '';
 }
- export const CanActivate = async () => {
+export const CanActivate = async () => {
   let user = getCookie('jwt');
-  const apiUrl = getUrlBaseApi('auth')
-  const res = await fetch(`${apiUrl}/check`, { credentials: 'include' })
+  const apiUrl = getUrlBaseApi('auth');
+  const res = await fetch(`${apiUrl}/check`, { credentials: 'include' });
+  const data = await res.json();
   const router = inject(Router);
-  console.log(res);
-  
-  if(res.status === 200) {
-    return true;
-  }else{
-    router.navigate(['home']);
-    return false;
-  }
-  
- 
+  console.log(data);
+
+  // if (res.status === 200) {
+  //   return true;
+  // } else {
+  //   router.navigate(['home']);
+  //   return false;
+  // }
 };
-
-
 
 export const CanActivateRoles = () => {
   let token = getCookie('jwt');
