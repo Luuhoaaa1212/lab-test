@@ -22,15 +22,17 @@ function getCookie(cname: string) {
   let user = getCookie('jwt');
   const apiUrl = getUrlBaseApi('auth')
   const res = await fetch(`${apiUrl}/user`, { credentials: 'include' })
-  console.log(res);
-  
   const router = inject(Router);
-  if (user) {
+
+  if(res.status === 200) {
     return true;
-  } else {
+    
+  }else{
     router.navigate(['home']);
     return false;
   }
+  
+ 
 };
 
 
