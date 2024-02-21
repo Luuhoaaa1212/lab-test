@@ -238,7 +238,7 @@ export class PurchaseComponent implements OnInit {
           this.oderDetail = this.handleSortCart(this.oderDetail);
         })
       );
-      this.oderData = ordersData;
+      this.oderData = this.handleSortCart(ordersData) ;
 
       this.oderDetailloading = this.handleSortShippingCart(this.oderDetail, 0);
       this.oderDetailShipping = this.handleSortShippingCart(this.oderDetail, 1);
@@ -256,7 +256,7 @@ export class PurchaseComponent implements OnInit {
     });
     return total;
   }
-  handleSortCart(arr: OdersDetail[]) {
+  handleSortCart(arr:any[]) {
     arr.sort(function (a, b) {
       let timeA = Math.max(
         new Date(a.createdAt).getTime(),
