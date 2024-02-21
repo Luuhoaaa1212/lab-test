@@ -3,6 +3,7 @@ import { UserService } from './auth.service';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
+import { getUrlBaseApi } from '../constant';
 function getCookie(cname: string) {
   const name = cname + '=';
   const ca = document.cookie.split(';');
@@ -17,8 +18,12 @@ function getCookie(cname: string) {
   }
   return '';
 }
-export const CanActivate = () => {
+ export const CanActivate = async () => {
   let user = getCookie('jwt');
+  const apiUrl = getUrlBaseApi('auth')
+  const res = await fetch(`${apiUrl}/user`, { credentials: 'include' })
+  console.log(res);
+  
   const router = inject(Router);
   if (user) {
     return true;
@@ -27,6 +32,9 @@ export const CanActivate = () => {
     return false;
   }
 };
+
+
+
 export const CanActivateRoles = () => {
   let token = getCookie('jwt');
   const router = inject(Router);
